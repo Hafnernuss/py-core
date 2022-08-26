@@ -3,9 +3,11 @@ import json
 import decouple
 from decouple import undefined
 from decouple import Csv
+from decouple import Choices
 from py_core import pretty
 
 Csv = Csv
+Choices = Choices
 _ignore_errors = False
 
 class ConfigurationManager():
@@ -21,13 +23,18 @@ class ConfigurationManager():
         self.parser = decouple.AutoConfig(path)
 
     def read_param(self, key, default=undefined, suggestion=undefined, cast=str, help_text=None):
+            if key not in self.default_conf.keys():
+                self.default_conf[key] = {}
+                self.default_conf[key]['value'] = default if default != undefined else suggestion
+                self.default_conf[key]['help_text'] = help_text
+                self.default_conf[key]['cast'] = cast
+            else:
+                default = self.default_conf[key]['value']
+                cast = self.default_conf[key]['cast']
+
             if default is undefined and suggestion is undefined:
                 pretty.error(f'cannot read key {key}: at least a default or suggestion is needed')
                 exit(-1)
-
-            self.default_conf[key] = {}
-            self.default_conf[key]['value'] = default if default != undefined else suggestion
-            self.default_conf[key]['help_text'] = help_text
 
             value = None
             try:
@@ -39,10 +46,6 @@ class ConfigurationManager():
                     else:
                         pretty.error(f'{str(e)}, suggestion: {str(suggestion)}')
                     exit(-1)
-                else:
-                    self.default_conf_required[key] = {}
-                    self.default_conf_required[key]['value'] = default if default != undefined else suggestion
-                    self.default_conf_required[key]['help_text'] = help_text
 
             return value
 
