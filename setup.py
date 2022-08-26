@@ -6,7 +6,8 @@ setup(
   packages=find_packages('.'),
   install_requires=[
     'click>=8.1.3',
-    'python-decouple>=3.6'
+    'python-decouple>=3.6',
+    'colorama>=0.4.4'
     ],
   entry_points={
     'console_scripts' : [
