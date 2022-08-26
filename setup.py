@@ -10,7 +10,7 @@ setup(
     ],
   entry_points={
     'console_scripts' : [
-      'cump_conf = py_core.config.dump_config:cli',
+      'dump_config = py_core.config.dump_config:cli',
     ]
   }
 )
