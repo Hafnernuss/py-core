@@ -1,4 +1,4 @@
-# py-core
+# py-core 0.0.2
 A set of handy utilities I commonly use in my python projects
 
 ## Config manager
